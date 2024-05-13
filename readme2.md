@@ -1,0 +1,61 @@
+## Configuring gotestwaf to test cf-apigateway application
+- Gotestwaf is configured to test the CF-Apigateway application by simulating approximately 700 requests, encompassing various attack types such as SQL injection, cross-site scripting (XSS), and XML injection. While many of these attacks may not be applicable to our specific application, this documentation thoroughly examines each request type to determine whether it should be included in the Gotestwaf test cases for assessing the security of the application.
+
+### Type of Attack, Purpose, Use-Case, Status(Retained/Removed),  Reason 
+- SQL-Injection
+    - Occurs when an attacker is able to manipulate SQL queries sent to a database through a web application.
+    - Purpose
+        - Exploit vulnerabilities in web applications that accept user input and dynamically construct SQL queries without proper input validation and sanitization. By injecting malicious SQL code, attackers can manipulate the behavior of the application's database and potentially gain access to sensitive data.
+    - Injection Points: 
+        - SQL injection attacks typically target input fields or parameters where user-supplied data is incorporated into SQL queries. Common injection points include login forms, search fields, and input forms used to construct dynamic SQL queries.
+    - Use-Case:
+        - Data Extraction: Attackers use SQL injection to extract sensitive information from a database, such as usernames, passwords, credit card numbers, or personal data.
+        - Data Manipulation: Attackers use SQL injection to modify or delete data stored in a database, potentially causing data loss or integrity issues.
+    - Status:
+        - <span style="color:red;">Removed.</span>
+    - Reason:
+        - Application does not have any database that could be attacked to retrieve sensitive data or change behavior of the application. 
+- XSS-Scripting:
+    - Occurs when attacker injects malicious scripts into web applications that are viewed by other users.
+    - Purpose
+        - Exploit vulnerabilities in web applications to execute arbitrary scripts in the browser of unsuspecting users. By injecting malicious scripts, attackers can steal sensitive information, such as session cookies or login credentials, perform actions on behalf of the user, or manipulate the appearance of web pages.
+    - Injection Points:
+        - Target input fields or parameters where user-supplied data is reflected back to other users without proper sanitization or validation. Common injection points include web forms, URL parameters, cookies, and HTTP headers.
+    - Use-Case:
+        - Stealing Cookies: Attackers use XSS to steal session cookies or authentication tokens, allowing them to impersonate users and access sensitive accounts.
+        - Phishing Attacks: Attackers create malicious web pages or emails containing XSS payloads to trick users into disclosing sensitive information, such as login credentials or financial details.
+    - Status:
+        - <span style="color:green;">Retained.</span>
+    - Reason:
+        - Attack can use the URL paramterers and HTTP headers to inject malicious scripts into the web-application.
+- XML-Injection:
+    - Occurs when an attacker injects a malicious XML content into an xml-based application.
+    - Purpose
+        - Exploit vulnerabilities in XML-based applications to gain unauthorized access to sensitive data, modify the behavior of the application, or disrupt its normal operation.
+    - Injection Points:
+        - Target input fields or parameters where XML data is accepted, such as XML documents, SOAP requests, XML-based APIs, or XML configuration files.
+    - Use-Case:
+        - Web Applications: XML injection attacks can target web applications that accept XML data, such as those using XML-based APIs or web services (e.g., SOAP, REST with XML payloads).
+    - Status:
+        - <span style="color:red;">Removed.</span>
+    - Reason:
+        - Application does not accept or process XML data, and does not reveal any sensitive data.
+- SST-Injection:
+    -  Occur when an attacker is able to manipulate the template processing engine on a server to execute arbitrary code. This type of attack typically targets web applications that use server-side template engines to dynamically generate web pages or other content based on user input.
+    - Purpose:
+        - By injecting malicious template code into input fields or parameters, attackers can manipulate the behavior of the template engine and potentially gain unauthorized access to sensitive data, execute remote commands, or compromise the security of the application.
+    - Injection-Point
+        - Occur in places where user-supplied input is incorporated into templates processed by the server-side template engine. Common injection points include: 
+            - Input Fields
+            - URL parameters
+            - HTTP Headers
+            - Cookies
+            - File Uploads
+            - API Requests
+    - Use-case: 
+        - Remote Code Execution: Attackers use SST injection attacks to execute arbitrary code on the server, allowing them to gain full control over the application or underlying server.
+        - Data Extraction: Attackers extract sensitive information from the server by injecting template code that accesses and retrieves data from databases, files, or other sources.
+    - Status:
+        - <span style="color:red;">Removed.</span>
+    - Reason:   
+        - Application does not use any template engine and there is no database with sensitive data.
