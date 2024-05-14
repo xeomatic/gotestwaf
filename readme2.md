@@ -1,6 +1,29 @@
 ## Configuring gotestwaf to test cf-apigateway application
 - Gotestwaf is configured to test the CF-Apigateway application by simulating approximately 700 requests, encompassing various attack types such as SQL injection, cross-site scripting (XSS), and XML injection. While many of these attacks may not be applicable to our specific application, this documentation thoroughly examines each request type to determine whether it should be included in the Gotestwaf test cases for assessing the security of the application.
 
+## Build gotestwaf image and run
+- docker build . 
+- docker tag <IMAGE_ID> <IMAGE_NAME>
+- docker run --rm --network="host" -it -v ${PWD}/reports:/app/reports \
+    <IMAGE_NAME> --url=<EVALUATED_SECURITY_SOLUTION_URL>
+
+| Type of Attack | Description | Status | Reason |
+|-----------------|-----------------|-----------------|-----------------|
+| SQL Injection | Manipulate SQL queries sent to a database through a web application | <span style="color:red;">Removed.</span> | No database |
+| XSS Scripting | Inject malicious scripts into web applications that are viewed by other users | <span style="color:green;">Retained.</span> |  Injection point eg. HTTP Header, forms or url parameters to inject malicious scripts |
+| XML Injection | Inject a malicious XML content into an xml-based application| <span style="color:red;">Removed.</span> | No xml file accepted or processed |
+| SST Injection | Manipulate the template processing engine on a server to execute arbitrary code(eg: ejs, jinja2,thymeleaf| <span style="color:red;">Removed.</span> | No template engine used |
+| SS Includes Injection | SSI to dynamically include malicious content in web pages | <span style="color:red;">Removed.</span> | No frontend that uses SSI |
+| RCE | execute arbitrary code or commands on a target system or application remotely by uploading a malicious file containing executable code (e.g., PHP, JavaScript) disguised as a legitimate file (e.g., image, document)  | <span style="color:red;">Removed.</span> | No server side processing or dynamic content creation |
+| Path-Traversal | Manipulate the input parameters to traverse directories and access files or directories by appending special characters or sequences (such as "../") to the input, which can lead to path traversal. | <span style="color:red;">Removed.</span> | There is no directory browsing feature|
+| Nosql Injection |  Manipulate queries and potentially access or modify sensitive data | <span style="color:red;">Removed.</span> | No nosql database|
+| Mail Injection |  Exploit weaknesses in email input validation to inject malicious content into email messages for sending spam, phishing, or conducting further malicious activities. | <span style="color:red;">Removed.</span> | No email feature|
+| LDAP Injection | Exploits weaknesses in LDAP input validation to manipulate LDAP queries and potentially gain unauthorized access to sensitive information stored in directory service | <span style="color:red;">Removed.</span> | no ldap auth |
+| CLRF | Inject CRLF characters into an application's input, typically in HTTP headers or other protocols for HTTP response splitting, session hijacking, or cross-site scripting (XSS).| <span style="color:green;">Retained.</span> | Using CRLF malicious scripts can be injected into the application. |
+
+
+ 
+
 ## OWASP
 
 ### Type of Attack, Purpose, Use-Case, Status(Retained/Removed),  Reason 
@@ -202,3 +225,4 @@
 - GRPC
     - Status: removed
     - Reason: No grpc based web-service
+
