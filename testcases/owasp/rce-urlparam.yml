@@ -1,8 +1,0 @@
-encoder:
-- URL
-payload: []
-placeholder:
-- URLParam
-- HTMLForm
-- HTMLMultipartForm
-type: RCE

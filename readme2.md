@@ -103,7 +103,7 @@
         - <span style="color:red;">Removed.</span>
     - Reason:   
         - Our Application is deployed on serverless and does not provide access to the terminal. The user is not asked for any input to be passed to shell command interpreter.
-- RCE
+- RCE (Remote Code Execution )
     - allows an attacker to execute arbitrary code or commands on a target system or application remotely. These attacks occur when an attacker is able to inject and execute malicious code on a vulnerable system, often by exploiting weaknesses in software or web applications.
     - Purpose:  
         -The purpose of Remote Code Execution attacks is typically to gain unauthorized access, control, or manipulate a targeted system or application. Attackers may have various motivations, including:
