@@ -1,6 +1,8 @@
 ## Configuring gotestwaf to test cf-apigateway application
 - Gotestwaf is configured to test the CF-Apigateway application by simulating approximately 700 requests, encompassing various attack types such as SQL injection, cross-site scripting (XSS), and XML injection. While many of these attacks may not be applicable to our specific application, this documentation thoroughly examines each request type to determine whether it should be included in the Gotestwaf test cases for assessing the security of the application.
 
+## OWASP
+
 ### Type of Attack, Purpose, Use-Case, Status(Retained/Removed),  Reason 
 - SQL-Injection
     - Occurs when an attacker is able to manipulate SQL queries sent to a database through a web application.
@@ -189,3 +191,14 @@
         - <span style="color:green;">Retained.</span>
     - Reason:   
         - Using CRLF malicious script scan be injected into the application. HTTP response spliting, session hijacking and xss attack can be performed.
+
+## OWASP-API
+- SOAP
+    - Status: removed
+    - Reason: No soap based web-service
+- Graph-Sql
+    - Status: removed
+    - Reason: No graphsql based web-service
+- GRPC
+    - Status: removed
+    - Reason: No grpc based web-service
