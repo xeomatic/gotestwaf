@@ -1,6 +1,0 @@
-encoder:
-- URL
-payload: []
-placeholder:
-- HTMLForm
-type: 32KB SQL Injection
