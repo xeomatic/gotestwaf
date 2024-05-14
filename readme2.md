@@ -40,7 +40,7 @@
         - <span style="color:red;">Removed.</span>
     - Reason:
         - Application does not accept or process XML data, and does not reveal any sensitive data.
-- SST-Injection:
+- Server Side Template Injection:
     -  Occur when an attacker is able to manipulate the template processing engine on a server to execute arbitrary code. This type of attack typically targets web applications that use server-side template engines to dynamically generate web pages or other content based on user input.
     - Purpose:
         - By injecting malicious template code into input fields or parameters, attackers can manipulate the behavior of the template engine and potentially gain unauthorized access to sensitive data, execute remote commands, or compromise the security of the application.
@@ -59,3 +59,133 @@
         - <span style="color:red;">Removed.</span>
     - Reason:   
         - Application does not use any template engine and there is no database with sensitive data.
+- Server-Side(SS) Includes-Injection
+    - occur when an attacker exploits vulnerabilities in web applications that use SSI to dynamically include content in web pages. SSI is a feature supported by some web servers that allows server-side scripts or commands to be embedded within HTML pages. When not properly configured or sanitized, SSI directives can be vulnerable to injection attacks.Example: JSP in Java
+    - Purpose
+        - Execute unauthorized commands or scripts on the server by injecting malicious SSI directives into input fields or parameters processed by the web application. By manipulating SSI directives, attackers can potentially gain unauthorized access to sensitive data, compromise the integrity of web pages, or execute arbitrary code on the server.
+    - Injection-Points:
+        -Locations within a web application where an attacker can inject malicious SSI directives to execute unauthorized commands or scripts on the server. 
+            - Input Fields
+            - URL Parameters
+            - HTTP Headers
+            - Cookies
+            - File Uploads
+            - Path paramters
+            - HTTP request parameters
+    - Use-cases:
+        - Remote Code Execution: Attackers use SSI injection attacks to execute arbitrary code or scripts on the server, gaining full control over the application or underlying server.
+        - Data Extraction: Attackers extract sensitive information from the server by injecting SSI directives that access and retrieve data from databases, files, or other sources.
+        - Content Manipulation: Attackers manipulate the content displayed on web pages by injecting SSI directives that modify or delete existing content or inject malicious scripts. 
+        - Server Compromise: Attackers compromise the security of the server by exploiting SSI injection vulnerabilities to gain unauthorized access, escalate privileges, or install backdoors for future exploitation.
+    - Status:
+        - <span style="color:red;">Removed.</span>
+    - Reason:   
+        - Our application does not have any frontend that uses SSI for dynamic content.
+- Shell-Injection
+    - Occur when an attacker is able to inject malicious shell commands into an application in order to execute unauthorized actions on the server. These attacks typically target web applications or other software systems that allow user input to be passed to a shell command interpreter without proper validation or sanitization.
+    - Purpose:
+        - The purpose of a Shell Injection attack is to execute arbitrary shell commands on the server where the vulnerable application is hosted.
+    - Injection Points:
+        - Shell Injection attacks can occur at various injection points within an application where user input is passed to a shell command interpreter. 
+            - Input Fields
+            - URL parameters
+            - HTTP headers
+            - File Uploads
+            - API Endpoints
+            - Environment variables
+    - Use-Case:
+        - A web application that allows users to search for files on the server by providing a filename. 
+        -  If the application constructs a shell command to perform the file search without properly validating or sanitizing the user input, an attacker could inject additional shell commands to execute arbitrary actions on the server.
+        - Unauthorized Data Access: Retrieving sensitive information from the server or accessing restricted files or directories.
+        - Data Manipulation: Modifying, deleting, or adding data to the server, potentially leading to data loss or corruption.
+        - System Compromise: Gaining control over the server to execute further attacks, install malware, or pivot to other systems within the network.
+    - Status:
+        - <span style="color:red;">Removed.</span>
+    - Reason:   
+        - Our Application is deployed on serverless and does not provide access to the terminal. The user is not asked for any input to be passed to shell command interpreter.
+- RCE
+    - allows an attacker to execute arbitrary code or commands on a target system or application remotely. These attacks occur when an attacker is able to inject and execute malicious code on a vulnerable system, often by exploiting weaknesses in software or web applications.
+    - Purpose:  
+        -The purpose of Remote Code Execution attacks is typically to gain unauthorized access, control, or manipulate a targeted system or application. Attackers may have various motivations, including:
+        - Data Theft: Accessing sensitive information stored on the compromised system, such as user credentials, financial data, or intellectual property.
+        - System Compromise: Taking control of the targeted system to install malware, backdoors, or other malicious software.
+    - Payload Delivery
+        - web requests, network traffic, email attachments, or file uploads.
+    - Use-Case:
+        - Attack could involve exploiting a vulnerability in a web application that allows users to upload files. 
+        -  If the application does not properly validate or sanitize user-supplied filenames, an attacker could upload a malicious file containing executable code (e.g., PHP, JavaScript) disguised as a legitimate file (e.g., image, document). When the uploaded file is processed or executed by the server, the attacker's code is executed, allowing them to gain control over the server, access sensitive data, or perform other malicious actions.
+    - Status:
+        - <span style="color:red;">Removed.</span>
+    - Reason:   
+        - Our application does not involve any server-side processing or dynamic content generation. 
+- RCE-urlparam
+    - Status:
+        - <span style="color:red;">Removed.</span>
+    - Reason:   
+        - Our application does not involve any server-side processing or dynamic content generation. 
+- Path-Traversal
+    -  A type of security exploit where an attacker aims to access files or directories that are stored outside of the web root directory. The purpose of a Path Traversal attack is to bypass access controls and gain unauthorized access to sensitive files or directories on a web server
+    - Attackers manipulate the input parameters to traverse directories and access files or directories that are not intended to be publicly accessible. This is achieved by appending special characters or sequences (such as "../") to the input, which can lead to path traversal.
+    - Use-Case:
+        -  In web applications that allow users to upload files or access resources based on user-supplied input, such as file download functionalities or directory browsing features. Attackers may attempt to manipulate the input parameters to traverse directories and access files containing sensitive information, such as user databases, system files, or application source code.
+        -   For example, consider a web application that allows users to download files by specifying the file path in the URL. If the application does not properly validate or sanitize the user-supplied input, an attacker could craft a malicious URL containing "../" sequences to traverse directories and access files outside of the intended directory structure, potentially leading to unauthorized access or data leakage.
+    - Status:
+        - <span style="color:red;">Removed.</span>
+    - Reason:   
+        - Our application does not involve any server-side processing or dynamic content generation. There is no directory browsing feature in the application and the user cannot download any file by specifying the file path.
+- NoSQL-Injection
+    -  Targets NoSQL (non-relational) databases, allowing attackers to manipulate queries and potentially access or modify sensitive data. While similar in concept to SQL Injection attacks, which target relational databases, NoSQL Injection exploits vulnerabilities in the way NoSQL databases handle untrusted input.
+    - Purpose:
+        - exploit vulnerabilities in NoSQL database queries to gain unauthorized access to data, manipulate query results, or perform other malicious actions. Attackers may attempt to extract sensitive information, escalate privileges, or modify data stored in the database for nefarious purposes.
+    - Use-Case:
+        -  In web applications or APIs that use NoSQL databases to store and retrieve data. These applications often accept user input, such as form fields or URL parameters, which are used to construct database queries. If the application does not properly validate or sanitize user input before executing queries, attackers can inject malicious payloads to manipulate the query logic and access unauthorized data.
+    - Mitigate:
+        - To mitigate NoSQL Injection attacks, developers should implement secure coding practices such as input validation, parameterization, and proper query sanitization. Additionally, access controls should be enforced to limit the privileges of database users and prevent unauthorized access to sensitive data. 
+    - Status:
+        - <span style="color:red;">Removed.</span>
+    - Reason:   
+        - Our application does not use No-SQL database.
+- Mail-Injection
+    - A type of security vulnerability that occurs when an attacker exploits weaknesses in email input validation to inject malicious content into email messages. These attacks can have various purposes, including sending spam, phishing, or conducting further malicious activities.
+    - Purpose: 
+        - The primary purpose of a mail injection attack is to exploit vulnerabilities in email systems to send unauthorized or malicious emails. Attackers may inject specially crafted content, such as additional recipients, forged sender addresses, or malicious scripts, into email headers or body to manipulate the behavior of email servers or clients.
+    - Use-Case:
+        - Spamming: Attackers inject a large number of email addresses into the recipient field of an email message to send spam emails to unsuspecting users. These spam emails may promote counterfeit products, adult content, or fraudulent schemes.
+        - Phishing: Attackers forge email headers or mimic legitimate email addresses to deceive recipients into believing that the email is from a trusted source, such as a bank, government agency, or reputable organization. The phishing emails typically contain links to fake websites designed to steal sensitive information, such as login credentials or financial data.
+        - Malware Distribution: Attackers embed malicious attachments or links in email messages to distribute malware, such as ransomware, trojans, or viruses. When recipients open the attachments or click on the links, their devices may become infected with malware, leading to data breaches or system compromise.
+    - Mitigate:
+        - To mitigate mail injection attacks, organizations should implement robust email security measures, including email validation, spam filtering, antivirus scanning, and user awareness training. Additionally, developers should sanitize and validate email input to prevent injection of malicious content into email messages
+    - Status:
+        - <span style="color:red;">Removed.</span>
+    - Reason:   
+        - Our application does not have email sending feature. 
+- LDAP-Injection
+    - occurs when an attacker exploits weaknesses in LDAP input validation to manipulate LDAP queries and potentially gain unauthorized access to sensitive information stored in directory services.
+    - Purpose:
+        - exploit vulnerabilities in applications or systems that interact with LDAP servers, such as authentication systems or directory services, to manipulate LDAP queries in a way that allows attackers to extract, modify, or delete data stored in the LDAP directory. By injecting malicious LDAP query syntax, attackers aim to bypass authentication mechanisms, escalate privileges, or access confidential information.
+    - Use-Case:
+        - LDAP injection attacks are commonly used in scenarios where applications or systems use LDAP for user authentication, authorization, or directory services
+        - Authentication Bypass: Attackers inject malicious LDAP query syntax into login forms to bypass authentication mechanisms and gain unauthorized access to protected resources. 
+        - Data Extraction: Attackers inject LDAP query syntax to extract sensitive information stored in the LDAP directory, such as user credentials, contact details, or organizational data.
+        - Privilege Escalation: Attackers exploit LDAP injection vulnerabilities to escalate their privileges within the application or system.
+    - Mitigate:
+        - To mitigate LDAP injection attacks, developers should implement secure coding practices, such as input validation, parameterization, and proper sanitization of LDAP query inputs. Additionally, access controls should be enforced to limit the privileges of LDAP users and prevent unauthorized access to sensitive data stored in the directory. 
+    - Status:
+        - <span style="color:red;">Removed.</span>
+    - Reason:   
+        - Our application does not use LDAP for user authentication and autheorization.
+- CRLF (Carriage Return Line Feed) 
+    -  occurs when an attacker exploits improper input validation to inject CRLF characters into an application's input, typically in HTTP headers or other protocols that use newline characters for formatting. These attacks can lead to various security risks, including HTTP response splitting, session hijacking, or cross-site scripting (XSS).
+    - Purpose:
+        - The purpose of a CRLF injection attack is to manipulate the behavior of web applications or systems by injecting newline characters (carriage return and line feed) into input fields, headers, or other data streams. By inserting CRLF characters, attackers aim to manipulate the formatting of HTTP responses or other protocol messages to perform various malicious activities, such as injecting arbitrary content, hijacking user sessions, or bypassing security controls.
+    - Use-Case
+        - CRLF injection attacks can be exploited in various scenarios where web applications or systems process user input or generate dynamic content.
+        - HTTP Response Splitting: Attackers inject CRLF characters into HTTP headers or parameter values to manipulate the formatting of HTTP responses. By causing the web server to output additional HTTP headers or content after the attacker-controlled newline characters, attackers can perform HTTP response splitting attacks to inject arbitrary content into the response, such as phishing links, malicious scripts, or fake HTTP headers.
+        - Session Hijacking: Attackers inject CRLF characters into HTTP request headers, such as the "Cookie" header, to manipulate the session management mechanism of web applications. By injecting newline characters followed by attacker-controlled HTTP headers, attackers can create forged HTTP requests that appear to originate from legitimate users' sessions, allowing them to hijack user sessions, perform unauthorized actions, or access sensitive information.
+        - Cross-Site Scripting (XSS): Attackers inject CRLF characters into input fields or HTTP headers to trigger XSS vulnerabilities in web applications. By injecting newline characters followed by malicious JavaScript code, attackers can execute arbitrary scripts in the context of other users' browsers, leading to session hijacking, data theft, or website defacement.
+    - Mitigate
+        - To mitigate CRLF injection attacks, developers should implement proper input validation, output encoding, and sanitization of user-supplied data to prevent the injection of newline characters into HTTP headers, parameter values, or other data streams. Additionally, web servers and security appliances should be configured to sanitize or reject HTTP requests containing suspicious or malicious newline characters to prevent HTTP response splitting attacks.
+    - Status:
+        - <span style="color:green;">Retained.</span>
+    - Reason:   
+        - Using CRLF malicious script scan be injected into the application. HTTP response spliting, session hijacking and xss attack can be performed.
