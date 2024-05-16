@@ -1,12 +1,45 @@
 ## Configuring gotestwaf to test cf-apigateway application
 - Gotestwaf is configured to test the CF-Apigateway application by simulating approximately 700 requests, encompassing various attack types such as SQL injection, cross-site scripting (XSS), and XML injection. While many of these attacks may not be applicable to our specific application, this documentation thoroughly examines each request type to determine whether it should be included in the Gotestwaf test cases for assessing the security of the application.
 
-## Build gotestwaf image and run
+## Build And Push Gotestwaf Image To Dockerhub
 - docker build . 
-- docker tag <IMAGE_ID> <IMAGE_NAME>
-- docker run --rm --network="host" -it -v ${PWD}/reports:/app/reports \
+- docker tag <IMAGE_ID> <USER_NAME>/<IMAGE_NAME> 
+- docker image push <USER_NAME>/<IMAGE_NAME>  
+
+## Pull And Run Docker Image from DockerHub
+- Pull image from dockerhub
+    - docker pull <USER_NAME>/<IMAGE_NAME>
+- Run the image     
+    - docker run --rm --network="host" -it -v ${PWD}/reports:/app/reports \
+    <USER_NAME>/<IMAGE_NAME> --url=<EVALUATED_SECURITY_SOLUTION_URL>
+
+## Build And Run Docker Image Locally
+- You can build the image and test it locally before pushing it to DockerHub.
+- Build image
+    - docker build . 
+    - docker tag <IMAGE_ID> <USERNAME>/<IMAGE_NAME> 
+- Run the image
+    - docker run --rm --network="host" -it -v ${PWD}/reports:/app/reports \
+    <USER_NAME>/<IMAGE_NAME> --url=<EVALUATED_SECURITY_SOLUTION_URL>
+
+## Testing Application Using GotestWaf
+- Pull the gotestwaf image from dockerhub.
+    - docker pull <USER_NAME>/<IMAGE_NAME>
+- Apply the terraform code of your application.
+- Get the url of cloudfront or apigateway to test using gotestwaf.
+- Execute docker run command using image name and url of application to test with gotestwaf.   
+    - docker run --rm --network="host" -it -v ${PWD}/reports:/app/reports \
     <IMAGE_NAME> --url=<EVALUATED_SECURITY_SOLUTION_URL>
 
+## Changes To Gotestwaf 
+- Certain test cases were excluded from gotestwaf when testing our application. 
+- This is because our application does not possess the vulnerabilities that those specific test cases are designed to detect.
+- Our application consists of following AWS resources: cloudfront, api-gateway and WAF
+- CloudFront CDN is used to reduce latency for requests and responses and to cache API Gateway responses.
+- WAF (Web Application Firewall) implements security checks for the application, blocking any requests identified as malicious.
+- GotestWAF is utilized to test the application against its WAF security checks, providing a comprehensive report on the requests used in the test cases.
+
+## Table Of Removed Testcases For The Application
 | Type of Attack | Description | Status | Reason |
 |-----------------|-----------------|-----------------|-----------------|
 | SQL Injection | Manipulate SQL queries sent to a database through a web application | <span style="color:red;">Removed.</span> | No database |
@@ -22,11 +55,12 @@
 | CLRF | Inject CRLF characters into an application's input, typically in HTTP headers or other protocols for HTTP response splitting, session hijacking, or cross-site scripting (XSS).| <span style="color:green;">Retained.</span> | Using CRLF malicious scripts can be injected into the application. |
 
 
+
  
+## Detailed description of different attacks in gotestwaf
+### OWASP
 
-## OWASP
-
-### Type of Attack, Purpose, Use-Case, Status(Retained/Removed),  Reason 
+#### Type of Attack, Purpose, Use-Case, Status(Retained/Removed),  Reason 
 - SQL-Injection
     - Occurs when an attacker is able to manipulate SQL queries sent to a database through a web application.
     - Purpose
@@ -215,7 +249,7 @@
     - Reason:   
         - Using CRLF malicious script scan be injected into the application. HTTP response spliting, session hijacking and xss attack can be performed.
 
-## OWASP-API
+#### OWASP-API
 - SOAP
     - Status: removed
     - Reason: No soap based web-service
